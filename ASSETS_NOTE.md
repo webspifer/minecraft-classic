@@ -8,6 +8,9 @@
 2. Fluid blocks animation's appear to use programmatic approach to animate the fluid block:
     * Lava: search for `BABYLON.DynamicTexture("lavaTexture"` in app.js
     * Water: search for `BABYLON.DynamicTexture("waterTexture"` in app.js
+   The following may be a helpful resources in figuring out how to generate the animation code for different textures:
+    * Most promising: https://medium.com/@babylonjs/animated-gifs-in-webgl-55a6c7bc9c93 & https://github.com/matt-way/gifuct-js
+    * Least promising: https://doc.babylonjs.com/how_to/how_to_use_procedural_textures
     
    You'll find that it uses a means of locating pixels in the image and changes each one, where in water's case it's with pixel transparencies.
 3. Changing the texture file alone won't work because you'll also need to change the colors in the dynamic texture animation in RGB (using normal RGB integers from 0 to 255):
