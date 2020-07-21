@@ -82,6 +82,8 @@
   After finding the locations, you'll need to change the names and file locations accordingly.
   
   On another note, whether or not you want to change the font files, you can also change any other aspect of the font style (colors, size, etc.) from doing the searches.
+  
+  To change the hover color, search for `this.over&&(t="rgb(255,255,160)")` in app.js.
 
 
 
