@@ -7,6 +7,7 @@ function Distort (source, distort) {
     this.getValue = function(x, y) {
         return this.source.getValue(x + this.distort.getValue(x, y), y);
     }
+
 }
 
 function ImprovedNoise (random) {
@@ -137,16 +138,20 @@ var RandomLevel = function () {
     }
 
     this.createLevel = function(seed, xSize, zSize, ySize) {
+
+        //this.progressRenderer.progressStart("Generating level");
+        //return;
         var random = new Random(seed);
 
-        // set world size properties
-        this.xSize = xSize;
-        this.ySize = 64;
-        this.zSize = zSize;
 
+        this.xSize = xSize;
+        this.zSize = zSize;
+        this.ySize = 64;
         this.random = random.nextFloat();
-        this.tiles = [];
+        this.tiles = [];//new Array(xSize*zSize*ySize);//[];
         this.fillQueue = [];
+
+        //console.log(this.random);
 
         // grow
         this.grow = function(aint) {
@@ -499,20 +504,18 @@ var RandomLevel = function () {
 
 
         progress.string = "Raising..";
-
+        //this.progressRenderer.progressStage("Raising..");
         var distort = new Distort(new PerlinNoise(this.random, 8), new PerlinNoise(this.random, 8));
         var distort1 = new Distort(new PerlinNoise(this.random, 8), new PerlinNoise(this.random, 8));
         var perlinnoise = new PerlinNoise(this.random, 8);
-
-        // 256x256 array of world noise
         var aint = [];
-
         var f = 1.3;
 
         var l;
         var i1;
 
         for (l = 0; l < xSize; ++l) {
+            //progress(l * 100 / (xSize - 1));
             progress.percent = l * 100 / (xSize - 1);
             self.postMessage(progress);
 
@@ -732,17 +735,15 @@ var RandomLevel = function () {
 }
 
 function startGeneration (obj) { //{worldSize: worldSize, seed: props.seed, seedrandom: seedrandom}
-    var level = new RandomLevel();
-    
-    var width = obj.worldSize;
-    var depth = obj.worldSize;
-    var height = 64;
-
-    level.createLevel(obj.seed, width, depth, height);
+	var level = new RandomLevel();
+	//console.log(level)
+	var width = obj.worldSize;
+	var depth = obj.worldSize;
+	var height = 64;
+	level.createLevel(obj.seed, width, depth, height);
 }
 
-// First function call here
-self.addEventListener('message', function(msgEvent) {
-    // msgEvent.data contains world size and seed
-    startGeneration(msgEvent.data)
+self.addEventListener('message', function(e) {
+  //console.log("worker get "+e.data);
+  startGeneration(e.data)
 }, false);
